@@ -1,38 +1,48 @@
-const regex = /(.*)(\d{1,2}:\d{2}(?!:\d{2})?)(.*)/g;
+const regex = /.*?(\d{1,2}:\d{1,2}(?::\d{1,2})?).*/g;
 const $description = document.querySelector("#description");
-const links = Array.from($description.innerHTML.matchAll(regex));
+const player = window.wrappedJSObject.movie_player;
+const links = Array.from($description.innerText.matchAll(regex));
 
-const $player = document.querySelector("#player-container-outer.style-scope.ytd-watch-flexy");
-$player.style.position = "relative";
+const $playerContainer = document.querySelector(
+  "#player-container-outer"
+);
+const $playerTheaterContainer = document.querySelector(
+  "#player-theater-container"
+);
 
 const createList = () => {
   const $ul = document.createElement("ul");
-  $ul.style.overflow = "scroll";
-  $ul.style.listStyleType = "none";
-  $ul.style.position = "absolute";
-  $ul.style.top = "0";
-  $ul.style.right = "0";
-  $ul.style.bottom = "0";
-  $ul.style.fontSize = "1.6rem";
-  $ul.style.color = "white";
-  $ul.style.zIndex = "1";
+  $ul.classList.add('ytsl-list')
 
   links.forEach((item) => {
-    console.log(item, window.location.href)
     const $li = document.createElement("li");
-    // const $a = document.createElement("a")
+    $li.classList.add('ytsl-item')
+    $li.innerText = item[0];
+    $li.addEventListener("click", function (e) {
+      const splitResult = item[1].split(":");
+      let date;
+      let hours;
+      let minutes;
+      let seconds;
 
-    $li.style.backgroundColor = "purple";
-    $li.style.padding = "1rem";
-    // $a.setAttribute("href", item[2])
-    // $a.innerHTML = item[0]
-    $li.innerHTML = item[0]
-    // $li.append($a)
+      if (splitResult.length === 3) {
+        [hours, minutes, seconds] = splitResult;
+        date = new Date(0, 0, 0, hours || 0, minutes || 0, seconds || 0);
+      } else if (splitResult.length === 2) {
+        [minutes, seconds] = splitResult;
+        date = new Date(0, 0, 0, 0, minutes || 0, seconds || 0);
+      }
+      const target =
+        date.getHours() * 60 * 60 + date.getMinutes() * 60 + date.getSeconds();
+
+      player.seekTo(target);
+    });
+    
     $ul.append($li);
   });
 
-  $player.append($ul);
+  $playerContainer.append($ul);
+  $playerTheaterContainer.append($ul)
 };
 
-console.log("tjo", links, $player);
 createList();

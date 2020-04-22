@@ -1,0 +1,32 @@
+#player-container-outer,
+#player-theater-container {
+  position: relative;
+}
+
+.ytsl-list {
+  overflow: scroll;
+  list-style-type: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 1.6rem;
+  color: white;
+  height: calc(100% - 49px); /* Value from progress bar being hardcoded */
+}
+
+.ytsl-item {
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.ytsl-item:hover {
+  background-image: linear-gradient(
+    to right,
+    #02aab0 0%,
+    #00cdac 51%,
+    #02aab0 100%
+  );
+  background-position: right center;
+}

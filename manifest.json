@@ -1,15 +1,16 @@
 {
-    "manifest_version": 2,
-    "name": "Youtube timestamp list plugin",
-    "version": "1.0",
-    "description": "If there's a timestamp list included in a video description, create a more useful list out of it",
-    "icons": {
-      "48": "icons/border-48.png"
-    },
-    "content_scripts": [
-      {
-        "matches": ["*://*.youtube.com/*"],
-        "js": ["index.js"]
-      }
-    ]
-  }
+  "manifest_version": 2,
+  "name": "Youtube timestamp list plugin",
+  "version": "1.0",
+  "description": "If there's a timestamp list included in a video description, create a more useful list out of it",
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "css": ["index.css"],
+      "js": ["index.js"]
+    }
+  ]
+}
