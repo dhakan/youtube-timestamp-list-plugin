@@ -4,13 +4,12 @@
   "version": "1.0",
   "description": "If there's a timestamp list included in a video description, create a more useful list out of it",
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icon.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["*://*.youtube.com/*"],
-      "css": ["index.css"],
-      "js": ["index.js"]
-    }
-  ]
+  "permissions": ["activeTab"],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Youtube timestamp list",
+    "default_popup": "panel.html"
+  }
 }
