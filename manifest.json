@@ -6,6 +6,12 @@
   "icons": {
     "48": "icon.png"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/watch*"],
+      "js": ["content_scripts/moment.min.js", "content_scripts/index.js"]
+    }
+  ],
   "permissions": ["activeTab"],
   "browser_action": {
     "default_icon": "icon.png",
