@@ -4,28 +4,30 @@ const handleActiveTab = (tabs) => {
   const activeTab = tabs[0];
 
   const onListItemClicked = (item) => {
-    const target = item[1];
-
     browser.tabs.sendMessage(activeTab.id, {
       command: "seek-to",
-      target: target,
+      target: item.ts,
     });
   };
 
   const createListItem = (timestamp) => {
+    console.log(timestamp, timestamp.paragraph)
     const $li = document.createElement("li");
     $li.classList.add("item");
-    $li.innerText = timestamp[0];
+    $li.innerText = timestamp.paragraph;
     $list.append($li);
 
     $li.addEventListener("click", () => onListItemClicked(timestamp));
   };
 
   const onMessage = (message) => {
+    console.log("heey");
     if (message.command === "timestamps") {
       const { timestamps } = message;
 
-      timestamps.forEach((item) => createListItem(item));
+      Array.from(timestamps.values()).forEach((timestamp) =>
+        createListItem(timestamp)
+      );
     }
   };
 
