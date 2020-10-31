@@ -8,7 +8,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/watch*"],
+      "matches": ["<all_urls>"],
       "js": ["content_scripts/moment.min.js", "content_scripts/index.js"]
     }
   ],

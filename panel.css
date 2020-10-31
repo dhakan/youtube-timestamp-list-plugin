@@ -9,11 +9,15 @@
 
 body {
   font-family: "Raleway", sans-serif;
+  font-size: 1.6rem;
+}
+
+.info-message {
+  padding: 1.6rem;
 }
 
 .list {
   list-style-type: none;
-  font-size: 1.6rem;
   color: white;
 }
 
