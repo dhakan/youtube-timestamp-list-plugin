@@ -9,31 +9,48 @@
   }
   window.hasRun = true;
 
-  const regex = /.*?(\d{1,2}:\d{1,2}(?::\d{1,2})?).*/g;
-  const player = window.wrappedJSObject.movie_player;
-  const $description = document.querySelector("#description");
+  const findTimestamps = () => {
+    const regex = /.*?(\d{1,2}:\d{1,2}(?::\d{1,2})?).*/g;
+    const $description = document.querySelector("#description");
+    const timestamps = Array.from($description.innerText.matchAll(regex));
 
-  browser.runtime.onMessage.addListener((message) => {
-    if (message.command === "get-timestamps") {
-      const foundLinks = Array.from($description.innerText.matchAll(regex));
-
-      if (!foundLinks.length) {
-        browser.runtime.sendMessage({
-          command: "no-timestamps-found"
-        });
-        return;
-      }
-
+    if (!timestamps.length) {
       browser.runtime.sendMessage({
-        command: "timestamps",
-        timestamps: foundLinks,
+        command: "no-timestamps-found",
       });
-    } else if (message.command === "seek-to") {
-      const date = moment(`2020-04-20 ${message.target}`);
-      const target =
-        date.hours() * 60 * 60 + date.minutes() * 60 + date.seconds();
-      player.seekTo(target);
-      player.playVideo();
+      return;
     }
-  });
+
+    browser.runtime.sendMessage({
+      command: "timestamps",
+      timestamps,
+    });
+  };
+
+  const seekToTimestamp = (target) => {
+    const player = window.wrappedJSObject.movie_player;
+    const date = moment(`2020-04-20 ${target}`);
+    const convertedTarget =
+      date.hours() * 60 * 60 + date.minutes() * 60 + date.seconds();
+    player.seekTo(convertedTarget);
+    player.playVideo();
+  };
+
+  const onMessage = (message) => {
+    const { command } = message;
+
+    if (command === "get-timestamps") {
+      findTimestamps();
+    } else if (command === "seek-to") {
+      const { target } = message;
+      seekToTimestamp(target);
+    } else if (command === "get-location-href") {
+      browser.runtime.sendMessage({
+        command: "location-href",
+        href: location.href,
+      });
+    }
+  };
+
+  browser.runtime.onMessage.addListener(onMessage);
 })();
